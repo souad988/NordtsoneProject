@@ -5,7 +5,6 @@ import SignUp from './SignUp';
 function Home() {
   return (
     <View>
-      <Text>Home</Text>
       <SignUp />
     </View>
   );

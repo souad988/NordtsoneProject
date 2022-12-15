@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginHorizontal: 40,
-    marginVertical: 100,
+    marginVertical: 40,
   },
   link: {
     color: '#006778',
