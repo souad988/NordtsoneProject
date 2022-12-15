@@ -36,7 +36,7 @@ function App() {
 
     setTimeout(() => {
       setSplash(false);
-    }, 4600);
+    }, 600);
   }, []);
 
   const styles = StyleSheet.create({
