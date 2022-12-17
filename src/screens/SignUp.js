@@ -1,34 +1,94 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 
 function LogIn() {
-  const [username, setUsername] = useState('');
+  const [validateMsg, setValidateMsg] = useState('');
   const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const signUp = () => {};
+  useEffect(() => {}, []);
+
+  const validateEmail = () => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      return false;
+    }
+    return 'invalid email!';
+  };
+
+  const validatePassword = () => {
+    if (password.length > 7) {
+      return false;
+    }
+    return 'password should be at least 8 characters!';
+  };
+
+  const validateConfirmPassword = () => {
+    if (password === confirmPassword) {
+      return false;
+    } else {
+      return 'repeat same password!';
+    }
+  };
+
+  const signUp = () => {
+    if (Object.keys(errors).length == 0) {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          setValidateMsg('User account created & signed in!');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            setErrors({email: 'That email address is already in use!'});
+          }
+
+          if (error.code === 'auth/invalid-email') {
+            setErrors({email: 'That email address is invalid!'});
+          }
+
+          console.error(error);
+        });
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <CustomInput
-        placeholder="username"
-        value={username}
-        setValue={setUsername}
+        placeholder="email"
+        value={email}
+        setValue={setEmail}
+        errors={errors['email'] ? errors.email : null}
+        setErrors={setErrors}
+        validate={validateEmail}
       />
-      <CustomInput placeholder="email" value={email} setValue={setEmail} />
+
       <CustomInput
         placeholder="password"
         value={password}
         setValue={setPassword}
+        errors={errors['password'] ? errors.password : null}
+        setErrors={setErrors}
+        validate={validatePassword}
       />
+
       <CustomInput
         placeholder="Confirm password"
         value={confirmPassword}
         setValue={setConfirmPassword}
+        errors={errors['confirmPassword'] ? errors.confirmPassword : null}
+        setErrors={setErrors}
+        validate={validateConfirmPassword}
       />
       <CustomButton title="SignUp" onPress={signUp} color="#FFD124" />
+      <Text style={styles.error}>{validateMsg}</Text>
     </View>
   );
 }
@@ -48,6 +108,9 @@ const styles = StyleSheet.create({
     color: '#006778',
     fontSize: 17,
     textAlign: 'center',
+  },
+  error: {
+    color: 'green',
   },
 });
 export default LogIn;

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from './src/screens/Home';
 import SplashScreen from './src/screens/SplashScreen';
@@ -12,6 +14,7 @@ import Calculator from './src/screens/Calculator';
 import NotifyMe from './src/screens/NotifyMe';
 
 const Tab = createBottomTabNavigator();
+
 function App() {
   const [splash, setSplash] = useState(true);
 
