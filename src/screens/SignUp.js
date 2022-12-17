@@ -14,23 +14,27 @@ function LogIn() {
   });
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log('email changed', email);
+    console.log('errors', errors);
+  }, [email, errors]);
 
-  const validateEmail = () => {
+  const validateEmail = email => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return false;
     }
     return 'invalid email!';
   };
 
-  const validatePassword = () => {
-    if (password.length > 7) {
+  const validatePassword = value => {
+    console.log('passsword', value);
+    if (value.length > 7) {
       return false;
     }
     return 'password should be at least 8 characters!';
   };
 
-  const validateConfirmPassword = () => {
+  const validateConfirmPassword = (password, confirmPassword) => {
     if (password === confirmPassword) {
       return false;
     } else {
@@ -42,12 +46,12 @@ function LogIn() {
     if (Object.keys(errors).length == 0) {
       auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          setValidateMsg('User account created & signed in!');
+        .then(res => {
+          setValidateMsg('User account created & signed in!', res);
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
-            setErrors({email: 'That email address is already in use!'});
+            setErrors({email: 'This email address is already in use!'});
           }
 
           if (error.code === 'auth/invalid-email') {
@@ -67,7 +71,7 @@ function LogIn() {
         setValue={setEmail}
         errors={errors['email'] ? errors.email : null}
         setErrors={setErrors}
-        validate={validateEmail}
+        validate={{validate: validateEmail, params: []}}
       />
 
       <CustomInput
@@ -76,16 +80,16 @@ function LogIn() {
         setValue={setPassword}
         errors={errors['password'] ? errors.password : null}
         setErrors={setErrors}
-        validate={validatePassword}
+        validate={{validate: validatePassword, params: []}}
       />
 
       <CustomInput
-        placeholder="Confirm password"
+        placeholder="confirmPassword"
         value={confirmPassword}
         setValue={setConfirmPassword}
         errors={errors['confirmPassword'] ? errors.confirmPassword : null}
         setErrors={setErrors}
-        validate={validateConfirmPassword}
+        validate={{validate: validateConfirmPassword, params: [password]}}
       />
       <CustomButton title="SignUp" onPress={signUp} color="#FFD124" />
       <Text style={styles.error}>{validateMsg}</Text>
