@@ -8,11 +8,16 @@ function CustomInput({
   setValue,
   errors,
   setErrors,
+  touched,
+  setTouched,
   validate,
 }) {
   const onChangeHandle = newValue => {
     console.log(placeholder, newValue);
     setValue(newValue);
+    setTouched(state => {
+      return {...state, [placeholder]: true};
+    });
     const err = validate.validate(newValue, ...validate.params);
     setErrors(state => {
       let obj = {...state};
@@ -36,7 +41,9 @@ function CustomInput({
           onChangeText={e => onChangeHandle(e)}
         />
       </View>
-      {errors && <Text style={styles.error}>{errors}</Text>}
+      {errors[placeholder] && (
+        <Text style={styles.error}>{errors[placeholder]}</Text>
+      )}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
@@ -17,18 +17,32 @@ const Tab = createBottomTabNavigator();
 
 function App() {
   const [splash, setSplash] = useState(true);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    console.log('user', user);
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   return (
     <>
       {splash ? (
         <SplashScreen setSplash={setSplash} />
-      ) : (
+      ) : user ? (
         <NavigationContainer>
           <Tab.Navigator
             screenOptions={({route}) => ({
-              header: ({navigation, route, options}) => {
-                return <Header style={options.headerStyle} />;
-              },
+              // header: ({navigation, route, options}) => {
+              //   return <Header style={options.headerStyle} />;
+              // },
               tabBarIcon: ({color}) => {
                 let iconName = '';
                 if (route.name === 'home') {
@@ -49,23 +63,39 @@ function App() {
                   />
                 );
               },
+              headerShown: false,
+              tabBarInactiveTintColor: '#006778',
+              tabBarActiveTintColor: 'white',
+              tabBarActiveBackgroundColor: '#00AFC1',
+              tabBarInactiveBackgroundColor: '#00AFC1',
+              // headerShadowVisible: true,
+              // headerTitleStyle:{
+              //   color: 'white',
+              //   fontWeight: 'bold'
+              // },
+              // headerStyle: {
+              //   height: 40,
+              //   alignItems: 'center',
+              //   backgroundColor: '#00AFC1',
+              // },
             })}
-            tabBarOptions={{
-              activeTintColor: 'white',
-              inactiveTintColor: '#006778',
-              activeBackgroundColor: '#00AFC1',
-              inactiveBackgroundColor: '#00AFC1',
-              headerStyle: {
-                height: 500,
-                color: '#00AFC1',
-              },
-            }}>
-            <Tab.Screen name="home" component={Home} />
+            // tabBarOptions={{
+            //   activeTintColor: 'white',
+            //   inactiveTintColor: '#006778',
+            //   activeBackgroundColor: '#00AFC1',
+            //   inactiveBackgroundColor: '#00AFC1',
+            //   headerStyle: {
+            //     height: 500,
+            //     color: '#00AFC1',
+            //   },
+            // }}
+          > 
             <Tab.Screen name="notify" component={NotifyMe} />
-            <Tab.Screen name="login" component={LogIn} />
             <Tab.Screen name="calculator" component={Calculator} />
           </Tab.Navigator>
         </NavigationContainer>
+      ) : (
+        <Home />
       )}
     </>
   );
