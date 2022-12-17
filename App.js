@@ -1,5 +1,5 @@
+import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
@@ -7,9 +7,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from './src/screens/Home';
 import SplashScreen from './src/screens/SplashScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import LogIn from './src/screens/LogIn';
-import SignUp from './src/screens/SignUp';
-import Header from './src/components/Header';
 import Calculator from './src/screens/Calculator';
 import NotifyMe from './src/screens/NotifyMe';
 
@@ -89,7 +86,7 @@ function App() {
             //     color: '#00AFC1',
             //   },
             // }}
-          > 
+          >
             <Tab.Screen name="notify" component={NotifyMe} />
             <Tab.Screen name="calculator" component={Calculator} />
           </Tab.Navigator>
