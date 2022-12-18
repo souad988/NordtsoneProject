@@ -1,6 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {signUp, validateConfirmPassword, validateEmail, validatePassword} from '../scripts/authentication'
+import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {
+  signUp,
+  validateConfirmPassword,
+  validateEmail,
+  validatePassword,
+} from '../scripts/authentication';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 
@@ -15,13 +20,17 @@ function SignUp({navigation}) {
     password: '',
     confirmPassword: '',
   });
-  const [touched, setTouched] = useState({email: false, password: false, confirmPassword: false});
-  
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+
   useEffect(() => {
-    if(validateMsg.length > 0){
+    if (validateMsg.length > 0) {
       setTimeout(() => {
-      navigation.navigate('login');
-    }, 2000);
+        navigation.navigate('login');
+      }, 2000);
     }
   }, [validateMsg]);
 
@@ -68,6 +77,9 @@ function SignUp({navigation}) {
         color="#FFD124"
       />
       <Text style={styles.error}>{validateMsg}</Text>
+      <Pressable onPress={() => navigation.navigate('login')}>
+        <Text style={styles.link}>Sign In -> </Text>
+      </Pressable>
     </View>
   );
 }
@@ -87,6 +99,7 @@ const styles = StyleSheet.create({
     color: '#006778',
     fontSize: 17,
     textAlign: 'center',
+    marginVertical: 5,
   },
   error: {
     color: 'green',

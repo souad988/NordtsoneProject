@@ -18,7 +18,10 @@ function CustomInput({
     setTouched(state => {
       return {...state, [placeholder]: true};
     });
-    const err = validate.validate(newValue, ...validate.params);
+  };
+  const validateInput = value => {
+    console.log('on blur value', value);
+    const err = validate.validate(value, ...validate.params);
     setErrors(state => {
       let obj = {...state};
       if (err) {
@@ -29,7 +32,6 @@ function CustomInput({
       return obj;
     });
   };
-
   return (
     <>
       <View style={styles.container}>
@@ -39,6 +41,7 @@ function CustomInput({
           secureTextEntry={isPassword}
           value={value}
           onChangeText={e => onChangeHandle(e)}
+          onEndEditing={e => validateInput(e.nativeEvent.text)}
         />
       </View>
       {errors[placeholder] && (

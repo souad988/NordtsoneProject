@@ -16,6 +16,7 @@ function LogIn({navigation}) {
   const handleLogin = () => {};
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Sign In</Text>
       <CustomInput
         placeholder="email"
         value={email}
@@ -45,14 +46,23 @@ function LogIn({navigation}) {
       />
       <Text style={styles.link}>Forgot password -> </Text>
       <Pressable onPress={() => navigation.navigate('signup')}>
-        <Text style={styles.link}>Create new account -> </Text>
+        <Text style={styles.link}>Sign Up -> </Text>
       </Pressable>
     </View>
   );
 }
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 50,
+    color: '#0093AB',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   container: {
     marginHorizontal: 40,
+    marginVertical: 100,
+    justifyContent: 'center',
   },
   link: {
     color: '#006778',

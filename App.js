@@ -11,7 +11,9 @@ import Calculator from './src/screens/Calculator';
 import NotifyMe from './src/screens/NotifyMe';
 
 const Tab = createBottomTabNavigator();
-
+auth()
+  .signOut()
+  .then(() => console.log('User signed out!'));
 function App() {
   const [splash, setSplash] = useState(true);
   const [initializing, setInitializing] = useState(true);

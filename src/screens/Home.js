@@ -10,18 +10,20 @@ const HomeStack = createStackNavigator();
 
 function Home() {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      style={{paddingVertical: 60, backgroundColor: 'yellow', height: 600}}>
       <HomeStack.Navigator
         screenOptions={({route}) => ({
-          headerTitleStyle: {
-            color: 'white',
-            fontSize: 20,
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: '#00AFC1',
-          },
+          headerShown: false,
+          // headerTitleStyle: {
+          //   color: 'white',
+          //   fontSize: 20,
+          //   fontWeight: 'bold',
+          // },
+          // headerTitleAlign: 'center',
+          // headerStyle: {
+          //   backgroundColor: '#00AFC1',
+          // },
         })}>
         <HomeStack.Screen name="login" component={LogIn} />
         <HomeStack.Screen name="signup" component={SignUp} />
