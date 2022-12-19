@@ -9,6 +9,7 @@ import SplashScreen from './src/screens/SplashScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Calculator from './src/screens/Calculator';
 import NotifyMe from './src/screens/NotifyMe';
+import PushNotification from 'react-native-push-notification';
 
 const Tab = createBottomTabNavigator();
 auth()
@@ -18,7 +19,13 @@ function App() {
   const [splash, setSplash] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-
+  
+  const createChannel =() =>{
+    PushNotification.createChannel({
+      channelId: "test-channel",
+      channelName: "test channel"
+    })
+  }
   // Handle user state changes
   function onAuthStateChanged(user) {
     console.log('user', user);
@@ -27,6 +34,7 @@ function App() {
   }
 
   useEffect(() => {
+    createChannel()
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
