@@ -12,9 +12,7 @@ import NotifyMe from './src/screens/NotifyMe';
 import PushNotification from 'react-native-push-notification';
 
 const Tab = createBottomTabNavigator();
-// auth()
-//   .signOut()
-//   .then(() => console.log('User signed out!'));
+
 function App() {
   const [splash, setSplash] = useState(true);
   const [initializing, setInitializing] = useState(true);
@@ -28,10 +26,14 @@ function App() {
   };
   // Handle user state changes
   function onAuthStateChanged(user) {
-    console.log('user', user);
     setUser(user);
     if (initializing) setInitializing(false);
   }
+  useEffect(() => {
+   auth()
+     .signOut()
+     .then(() => console.log('User signed out!'));
+  }, [])
 
   useEffect(() => {
     createChannel();
@@ -50,6 +52,16 @@ function App() {
               // header: ({navigation, route, options}) => {
               //   return <Header style={options.headerStyle} />;
               // },
+              headerTitleStyle: {
+                color: 'white',
+                fontSize: 30,
+                fontWeight: 'bold',
+              },
+              headerTitleAlign: 'center',
+              headerTitle: 'Nordstone',
+              headerStyle: {
+                backgroundColor: '#00AFC1',
+              },
               tabBarIcon: ({color}) => {
                 let iconName = '';
                 if (route.name === 'home') {
@@ -70,7 +82,7 @@ function App() {
                   />
                 );
               },
-              headerShown: false,
+              //headerShown: false,
               tabBarInactiveTintColor: '#006778',
               tabBarActiveTintColor: 'white',
               tabBarActiveBackgroundColor: '#00AFC1',

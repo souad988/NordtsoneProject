@@ -78,7 +78,7 @@ function SignUp({navigation}) {
       />
       <Text style={styles.error}>{validateMsg}</Text>
       <Pressable onPress={() => navigation.navigate('login')}>
-        <Text style={styles.link}>Sign In -> </Text>
+        <Text style={styles.link}>{'<- LogIn'} </Text>
       </Pressable>
     </View>
   );

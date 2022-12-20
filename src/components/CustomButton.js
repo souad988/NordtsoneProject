@@ -2,7 +2,6 @@ import React from 'react';
 import {Pressable, Text, StyleSheet} from 'react-native';
 
 function CustomButton({onPress, title, color, disabled}) {
-  console.log('disabled', disabled)
   return (
     <Pressable
       disabled={disabled ? disabled : false}

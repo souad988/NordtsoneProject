@@ -13,10 +13,10 @@ function LogIn({navigation}) {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({email: '', password: ''});
   const [touched, setTouched] = useState({email: false, password: false});
-  const handleLogin = () => {};
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
+      <Text style={styles.title}>LogIn</Text>
       <CustomInput
         placeholder="email"
         value={email}
@@ -44,7 +44,15 @@ function LogIn({navigation}) {
         }
         color="#0093AB"
       />
-      <Text style={styles.link}>Forgot password -> </Text>
+
+      {errors['response'] && (
+        <Text style={styles.error}>{errors['response']}</Text>
+      )}
+
+      <Pressable onPress={() => navigation.navigate('resetPassword')}>
+        <Text style={styles.link}>Forgot password -> </Text>
+      </Pressable>
+
       <Pressable onPress={() => navigation.navigate('signup')}>
         <Text style={styles.link}>Sign Up -> </Text>
       </Pressable>
@@ -69,6 +77,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
     marginVertical: 5,
+  },
+  error: {
+    color: 'red',
   },
 });
 export default LogIn;

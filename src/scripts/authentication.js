@@ -70,15 +70,19 @@ export const login = (email, password, errors, setErrors, touched, navigation) =
       return {...state, password: 'required!'};
     });
   } else {
-    if (Object.keys(errors).length === 0) {
+    if (
+      !errors.hasOwnProperty('email') &&
+      !errors.hasOwnProperty('password')
+    ) {
       auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-        
-        //   navigation.navigate('notify')
+          navigation.navigate('notify');
         })
         .catch(error => {
-          console.log(error.code);
+          setErrors(state => {
+            return {...state, response: error.message};
+          });
         });
     }
   }
