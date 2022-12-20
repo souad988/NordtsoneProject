@@ -13,24 +13,25 @@ function CustomInput({
   validate,
 }) {
   const onChangeHandle = newValue => {
-    console.log(placeholder, newValue);
+    console.log(placeholder, newValue, typeof newValue);
     setValue(newValue);
     setTouched(state => {
       return {...state, [placeholder]: true};
     });
   };
   const validateInput = value => {
-    console.log('on blur value', value);
-    const err = validate.validate(value, ...validate.params);
-    setErrors(state => {
-      let obj = {...state};
-      if (err) {
-        obj[placeholder] = err;
-      } else {
-        delete obj[placeholder];
-      }
-      return obj;
-    });
+    if (validate) {
+      const err = validate.validate(value, ...validate.params);
+      setErrors(state => {
+        let obj = {...state};
+        if (err) {
+          obj[placeholder] = err;
+        } else {
+          delete obj[placeholder];
+        }
+        return obj;
+      });
+    }
   };
   return (
     <>

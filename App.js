@@ -12,20 +12,20 @@ import NotifyMe from './src/screens/NotifyMe';
 import PushNotification from 'react-native-push-notification';
 
 const Tab = createBottomTabNavigator();
-auth()
-  .signOut()
-  .then(() => console.log('User signed out!'));
+// auth()
+//   .signOut()
+//   .then(() => console.log('User signed out!'));
 function App() {
   const [splash, setSplash] = useState(true);
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  
-  const createChannel =() =>{
+
+  const createChannel = () => {
     PushNotification.createChannel({
-      channelId: "test-channel",
-      channelName: "test channel"
-    })
-  }
+      channelId: 'test-channel',
+      channelName: 'test channel',
+    });
+  };
   // Handle user state changes
   function onAuthStateChanged(user) {
     console.log('user', user);
@@ -34,7 +34,7 @@ function App() {
   }
 
   useEffect(() => {
-    createChannel()
+    createChannel();
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);

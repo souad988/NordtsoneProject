@@ -8,7 +8,7 @@ export const validateEmail = email => {
 };
 
 export const validatePassword = value => {
-  console.log('passsword', value);
+ 
   if (value.length > 7) {
     return false;
   }
@@ -54,7 +54,7 @@ export const signUp = (
           if (error.code === 'auth/email-already-in-use') {
             setErrors({email: 'This email address is already in use!'});
           }
-          console.error(error);
+         
         });
     }
   }
@@ -74,7 +74,7 @@ export const login = (email, password, errors, setErrors, touched, navigation) =
       auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          console.log('loged in using email and password');
+        
         //   navigation.navigate('notify')
         })
         .catch(error => {
