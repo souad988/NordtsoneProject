@@ -10,6 +10,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Calculator from './src/screens/Calculator';
 import NotifyMe from './src/screens/NotifyMe';
 import PushNotification from 'react-native-push-notification';
+import ListImages from './src/screens/ListImages';
+import UploadImage from './src/screens/UploadImage'
 
 const Tab = createBottomTabNavigator();
 
@@ -29,11 +31,11 @@ function App() {
     setUser(user);
     if (initializing) setInitializing(false);
   }
-  useEffect(() => {
-   auth()
-     .signOut()
-     .then(() => console.log('User signed out!'));
-  }, [])
+  // useEffect(() => {
+  //  auth()
+  //    .signOut()
+  //    .then(() => console.log('User signed out!'));
+  // }, [])
 
   useEffect(() => {
     createChannel();
@@ -64,14 +66,16 @@ function App() {
               },
               tabBarIcon: ({color}) => {
                 let iconName = '';
-                if (route.name === 'home') {
-                  iconName = 'home';
+                if (route.name === 'listImages') {
+                  iconName = 'image-multiple';
                 } else if (route.name === 'login') {
                   iconName = 'login';
                 } else if (route.name === 'calculator') {
                   iconName = 'calculator';
                 } else if (route.name === 'notify') {
                   iconName = 'bell-plus';
+                } else if (route.name === 'uploadImage') {
+                  iconName = 'cloud-upload';
                 }
 
                 return (
@@ -110,6 +114,8 @@ function App() {
             // }}
           >
             <Tab.Screen name="notify" component={NotifyMe} />
+            <Tab.Screen name="uploadImage" component={UploadImage} />
+            <Tab.Screen name="listImages" component={ListImages} />
             <Tab.Screen name="calculator" component={Calculator} />
           </Tab.Navigator>
         </NavigationContainer>
