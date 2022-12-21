@@ -1,7 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import {getImages} from '../api/firbaseApi';
 
 function ListImages() {
+  const [images, setImages] = useState([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getImages(setImages);
+    }, []),
+  );
+  //   useEffect(() => {
+  //     getImages(setImages);
+  //   }, []);
+
   const data = [
     {
       title: 'first',
@@ -30,11 +42,11 @@ function ListImages() {
         style={styles.img}
       /> */}
       <FlatList
-        data={data}
+        data={images}
         renderItem={({item}) => (
           <>
             <Image source={{uri: item.url}} style={styles.img} />
-            <Text>{item.title}</Text>
+            {/* <Text>{item.title}</Text> */}
           </>
         )}
       />
