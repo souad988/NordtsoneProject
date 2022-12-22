@@ -1,10 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {View, Button, Image, StyleSheet, Pressable, Text} from 'react-native';
+import {
+  View,
+  Button,
+  Image,
+  StyleSheet,
+  Pressable,
+  Text,
+  ScrollView,
+} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {uploadFile} from '../api/firbaseApi';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import CustomButton from '../components/CustomButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ListImages from './ListImages';
 
 function UploadImage() {
   const [selectedImage, setSelectedImage] = useState();
@@ -44,60 +53,58 @@ function UploadImage() {
   };
 
   return (
-    <View style={styles.container}>
-      <Pressable title="Select Image" onPress={() => handleSelectImage()}>
-        <View style={styles.box}>
-          <MaterialCommunityIcons
-            name={'file-image-plus'}
-            size={30}
-            color={'#0093AB'}
-          />
-          <Text style={styles.clickable}>Select Image</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <Pressable title="Select Image" onPress={() => handleSelectImage()}>
+          <View style={styles.box}>
+            <MaterialCommunityIcons
+              name={'file-image-plus'}
+              size={30}
+              color={'#0093AB'}
+            />
+            <Text style={styles.clickable}>Select Image</Text>
+          </View>
+        </Pressable>
+
+        <View style={styles.imageBox}>
+          {uploading ? (
+            <AnimatedCircularProgress
+              size={50}
+              width={5}
+              fill={loadingPercent || 0}
+              tintColor="#FFD124"
+              backgroundColor="gray">
+              {loadingPercent => <Text>{loadingPercent}</Text>}
+            </AnimatedCircularProgress>
+          ) : (
+            <Image source={{uri: selectedImage}} style={styles.image} />
+          )}
         </View>
-      </Pressable>
+        <CustomButton
+          title="Upload"
+          onPress={() => handleUploadFile()}
+          color="#0093AB"
+          disabled={uploading || !selectedImage}
+        />
 
-      <View style={styles.imageBox}>
-        {uploading ? (
-          <AnimatedCircularProgress
-            size={50}
-            width={5}
-            fill={loadingPercent || 0}
-            tintColor="#FFD124"
-            //   onAnimationComplete={() => {
-            //     setLoadingPercent();
-            //     setUploading(false);
-            //   }}
-            backgroundColor="gray">
-            {loadingPercent => <Text>{loadingPercent}</Text>}
-          </AnimatedCircularProgress>
-        ) : (
-          <Image
-            source={{uri: selectedImage}}
-            style={styles.image}
-          />
-        )}
+        {loadingMsg ? (
+          loadingMsg.success ? (
+            <Text style={{color: 'green'}}>{loadingMsg.success}</Text>
+          ) : (
+            <Text style={{color: 'red'}}>{loadingMsg.error}</Text>
+          )
+        ) : null}
+
+        <ListImages uploading={uploading} />
       </View>
-      <CustomButton
-        title="Upload"
-        onPress={() => handleUploadFile()}
-        color="#0093AB"
-        disabled={uploading || !selectedImage}
-      />
-
-      {loadingMsg ? (
-        loadingMsg.success ? (
-          <Text style={{color: 'green'}}>{loadingMsg.success}</Text>
-        ) : (
-          <Text style={{color: 'red'}}>{loadingMsg.error}</Text>
-        )
-      ) : null}
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 40,
+    paddingHorizontal: 40,
+    paddingVertical: 40,
     justifyContent: 'center',
   },
   clickable: {

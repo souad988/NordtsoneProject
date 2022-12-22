@@ -1,55 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import {getImages} from '../api/firbaseApi';
 
-function ListImages() {
+function ListImages({uploading}) {
   const [images, setImages] = useState([]);
-  useFocusEffect(
-    React.useCallback(() => {
+  useEffect(() => {
+    if (!uploading) {
       getImages(setImages);
-    }, []),
-  );
-  //   useEffect(() => {
-  //     getImages(setImages);
-  //   }, []);
+    }
+  }, [uploading]);
 
-  const data = [
-    {
-      title: 'first',
-      id: 1,
-      url: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df',
-    },
-    {
-      title: 'second',
-      id: 2,
-      url: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df',
-    },
-    {
-      title: 'third',
-      id: 3,
-      url: 'https://firebasestorage.googleapis.com/v0/b/nordstoneproject-a34a9.appspot.com/o/images%2Factivity_details_mobile2.PNG?alt=media&token=a937677f-8dd6-4336-bbab-689a69b64bc9',
-    },
-  ];
   return (
     <View>
       <Text style={styles.title}>My Collection</Text>
-
-      {/* <Image
-        source={{
-          uri: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df',
-        }}
-        style={styles.img}
-      /> */}
-      <FlatList
-        data={images}
-        renderItem={({item}) => (
-          <>
-            <Image source={{uri: item.url}} style={styles.img} />
-            {/* <Text>{item.title}</Text> */}
-          </>
-        )}
-      />
+    {images.length > 0 && images.map(item=>(
+         <Image key={item.id} source={{uri: item.url}} style={styles.img} />
+    ))}  
     </View>
   );
 }

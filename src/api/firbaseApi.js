@@ -1,45 +1,43 @@
 import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {collection, addDoc} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 import {v4 as uuid} from 'uuid';
 
-export const addNewPost = text =>{
-   firestore()
-     .collection('Posts')
-     .add({
-       text: text,
-     })
-     .then(() => {
-       console.log('post added!');
-     }); 
-}
+export const addNewPost = async (text, setLoading) => {
+  setLoading(true);
+  try {
+    const docRef = await firestore().collection('Posts').add({
+      text: text,
+    });
+    console.log('Document written with ID: ', docRef.id);
+    setLoading(false);
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+  setTimeout(()=>{setLoading(false)},500)// firestore add doc is creating the new doc in db but not returning response due to the way i configured firebase I need to fix it later
+};
 
-export const getPosts = (setState) =>{
-    firestore()
-      .collection('Posts')
-      .get()
-      .then(querySnapshot => {
-        console.log('Total users: ', querySnapshot.size);
-        setState([]);
-        querySnapshot.forEach(documentSnapshot => {
-          console.log(
-            'User ID: ',
-            documentSnapshot.id,
-            documentSnapshot.data(),
-          );
-          setState(state => {
-            let newState = [...state];
-            newState.push({
-              id: documentSnapshot.id,
-              text: documentSnapshot.data().text,
-            });
-            return newState;
+export const getPosts = setState => {
+  firestore()
+    .collection('Posts')
+    .get()
+    .then(querySnapshot => {
+      console.log('Total users: ', querySnapshot.size);
+      setState([]);
+      querySnapshot.forEach(documentSnapshot => {
+        console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+        setState(state => {
+          let newState = [...state];
+          newState.push({
+            id: documentSnapshot.id,
+            text: documentSnapshot.data().text,
           });
+          return newState;
         });
       });
-}
-
+    });
+};
 
 const addNewImage = image => {
   firestore()
@@ -62,7 +60,7 @@ export const getImages = setImages => {
     .get()
     .then(querySnapshot => {
       console.log('Total users: ', querySnapshot.size);
-      setImages([])
+      setImages([]);
       querySnapshot.forEach(documentSnapshot => {
         console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
         setImages(state => {

@@ -34,7 +34,7 @@ function SplashScreen({setSplash}) {
 
     setTimeout(() => {
       setSplash(false);
-    }, 600); //3600
+    }, 3600);
   }, []);
 
   const styles = StyleSheet.create({
